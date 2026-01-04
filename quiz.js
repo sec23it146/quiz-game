@@ -1,246 +1,117 @@
-const quizData = [
-  {
-    question: "What is the capital of France?",
-    options: ["Paris", "London", "Berlin", "Madrid"],
-    answer: "Paris",
-  },
-  {
-    question: "What is the largest planet in our solar system?",
-    options: ["Mars", "Saturn", "Jupiter", "Neptune"],
-    answer: "Jupiter",
-  },
-  {
-    question: "Which country won the FIFA World Cup in 2018?",
-    options: ["Brazil", "Germany", "France", "Argentina"],
-    answer: "France",
-  },
-  {
-    question: "What is the tallest mountain in the world?",
-    options: ["Mount Everest", "K2", "Kangchenjunga", "Makalu"],
-    answer: "Mount Everest",
-  },
-  {
-    question: "Which is the largest ocean on Earth?",
-    options: [
-      "Pacific Ocean",
-      "Indian Ocean",
-      "Atlantic Ocean",
-      "Arctic Ocean",
-    ],
-    answer: "Pacific Ocean",
-  },
-  {
-    question: "What is the chemical symbol for gold?",
-    options: ["Au", "Ag", "Cu", "Fe"],
-    answer: "Au",
-  },
-  {
-    question: "Who painted the Mona Lisa?",
-    options: [
-      "Pablo Picasso",
-      "Vincent van Gogh",
-      "Leonardo da Vinci",
-      "Michelangelo",
-    ],
-    answer: "Leonardo da Vinci",
-  },
-  {
-    question: "Which planet is known as the Red Planet?",
-    options: ["Mars", "Venus", "Mercury", "Uranus"],
-    answer: "Mars",
-  },
-  {
-    question: "What is the largest species of shark?",
-    options: [
-      "Great White Shark",
-      "Whale Shark",
-      "Tiger Shark",
-      "Hammerhead Shark",
-    ],
-    answer: "Whale Shark",
-  },
-  {
-    question: "Which animal is known as the King of the Jungle?",
-    options: ["Lion", "Tiger", "Elephant", "Giraffe"],
-    answer: "Lion",
-  },
-  {
-    question: "What is the capital of Japan?",
-    options: ["Tokyo", "Kyoto", "Osaka", "Nagoya"],
-    answer: "Tokyo",
-  },
-  {
-    question: "Which element has the atomic number 1?",
-    options: ["Helium", "Oxygen", "Hydrogen", "Carbon"],
-    answer: "Hydrogen",
-  },
-  {
-    question: "Who wrote 'Romeo and Juliet'?",
-    options: [
-      "Charles Dickens",
-      "William Shakespeare",
-      "Mark Twain",
-      "Leo Tolstoy",
-    ],
-    answer: "William Shakespeare",
-  },
-  {
-    question: "What is the smallest country in the world?",
-    options: ["Monaco", "San Marino", "Liechtenstein", "Vatican City"],
-    answer: "Vatican City",
-  },
-  {
-    question: "Which planet is known for its rings?",
-    options: ["Venus", "Saturn", "Jupiter", "Neptune"],
-    answer: "Saturn",
-  },
-  {
-    question: "Who discovered penicillin?",
-    options: [
-      "Marie Curie",
-      "Alexander Fleming",
-      "Louis Pasteur",
-      "Isaac Newton",
-    ],
-    answer: "Alexander Fleming",
-  },
-  {
-    question: "Which continent is the Sahara Desert located on?",
-    options: ["Asia", "Africa", "Australia", "Europe"],
-    answer: "Africa",
-  },
-  {
-    question: "What is the main ingredient in guacamole?",
-    options: ["Tomato", "Avocado", "Onion", "Pepper"],
-    answer: "Avocado",
-  },
-  {
-    question: "Which country is known as the Land of the Rising Sun?",
-    options: ["China", "South Korea", "Thailand", "Japan"],
-    answer: "Japan",
-  },
-];
+document.addEventListener("DOMContentLoaded", function () {
 
-const quizContainer = document.getElementById("quiz");
-const resultContainer = document.getElementById("result");
-const submitButton = document.getElementById("submit");
-const retryButton = document.getElementById("retry");
-const showAnswerButton = document.getElementById("showAnswer");
+  const quizData = [
+    {
+      question: "What is the capital of France?",
+      options: ["Paris", "London", "Berlin", "Madrid"],
+      answer: "Paris"
+    },
+    {
+      question: "Which planet is known as the Red Planet?",
+      options: ["Earth", "Mars", "Jupiter", "Saturn"],
+      answer: "Mars"
+    },
+    {
+      question: "Who wrote Romeo and Juliet?",
+      options: ["Shakespeare", "Dickens", "Tolstoy", "Homer"],
+      answer: "Shakespeare"
+    }
+  ];
 
-let currentQuestion = 0;
-let score = 0;
-let incorrectAnswers = [];
+  const quiz = document.getElementById("quiz");
+  const result = document.getElementById("result");
+  const submitBtn = document.getElementById("submit");
+  const retryBtn = document.getElementById("retry");
+  const showAnswerBtn = document.getElementById("showAnswer");
 
-function shuffleArray(array) {
-  for (let i = array.length - 1; i &gt; 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
+  let currentQuestion = 0;
+  let score = 0;
+  let wrongAnswers = [];
 
-function displayQuestion() {
-  const questionData = quizData[currentQuestion];
+  function loadQuestion() {
+    const q = quizData[currentQuestion];
 
-  const questionElement = document.createElement("div");
-  questionElement.className = "question";
-  questionElement.innerHTML = `${currentQuestion + 1}.${questionData.question}`;
-
-  const optionsElement = document.createElement("div");
-  optionsElement.className = "options";
-
-  const shuffledOptions = [...questionData.options];
-  shuffleArray(shuffledOptions);
-
-  for (let i = 0; i &lt; shuffledOptions.length; i++) {
-    const option = document.createElement(&quot;label&quot;);
-    option.className = &quot;option&quot;;
-
-    const radio = document.createElement(&quot;input&quot;);
-    radio.type = &quot;radio&quot;;
-    radio.name = &quot;quiz&quot;;
-    radio.value = shuffledOptions[i];
-
-    const optionText = document.createTextNode(shuffledOptions[i]);
-
-    option.appendChild(radio);
-    option.appendChild(optionText);
-    optionsElement.appendChild(option);
+    quiz.innerHTML = `
+      <div class="question">${currentQuestion + 1}. ${q.question}</div>
+      <div class="options">
+        ${q.options.map(opt =>
+          `<label class="option">
+            <input type="radio" name="quiz" value="${opt}"> ${opt}
+          </label>`
+        ).join("")}
+      </div>
+    `;
   }
 
-  quizContainer.innerHTML = &quot;&quot;;
-  quizContainer.appendChild(questionElement);
-  quizContainer.appendChild(optionsElement);
-}
+  function checkAnswer() {
+    const selected = document.querySelector('input[name="quiz"]:checked');
 
-function checkAnswer() {
-  const selectedOption = document.querySelector(&#039;input[name=&quot;quiz&quot;]:checked&#039;);
-  if (selectedOption) {
-    const answer = selectedOption.value;
-    if (answer === quizData[currentQuestion].answer) {
+    if (!selected) return;
+
+    if (selected.value === quizData[currentQuestion].answer) {
       score++;
     } else {
-      incorrectAnswers.push({
+      wrongAnswers.push({
         question: quizData[currentQuestion].question,
-        incorrectAnswer: answer,
-        correctAnswer: quizData[currentQuestion].answer,
+        your: selected.value,
+        correct: quizData[currentQuestion].answer
       });
     }
+
     currentQuestion++;
-    selectedOption.checked = false;
-    if (currentQuestion &lt; quizData.length) {
-      displayQuestion();
+
+    if (currentQuestion < quizData.length) {
+      loadQuestion();
     } else {
-      displayResult();
+      showResult();
     }
   }
-}
 
-function displayResult() {
-  quizContainer.style.display = &quot;none&quot;;
-  submitButton.style.display = &quot;none&quot;;
-  retryButton.style.display = &quot;inline-block&quot;;
-  showAnswerButton.style.display = &quot;inline-block&quot;;
-  resultContainer.innerHTML = `You scored ${score} out of ${quizData.length}!`;
-}
+  function showResult() {
+    quiz.style.display = "none";
+    submitBtn.style.display = "none";
+    retryBtn.classList.remove("hide");
+    showAnswerBtn.classList.remove("hide");
 
-function retryQuiz() {
-  currentQuestion = 0;
-  score = 0;
-  incorrectAnswers = [];
-  quizContainer.style.display = &quot;block&quot;;
-  submitButton.style.display = &quot;inline-block&quot;;
-  retryButton.style.display = &quot;none&quot;;
-  showAnswerButton.style.display = &quot;none&quot;;
-  resultContainer.innerHTML = &quot;&quot;;
-  displayQuestion();
-}
-
-function showAnswer() {
-  quizContainer.style.display = &quot;none&quot;;
-  submitButton.style.display = &quot;none&quot;;
-  retryButton.style.display = &quot;inline-block&quot;;
-  showAnswerButton.style.display = &quot;none&quot;;
-
-  let incorrectAnswersHtml = &quot;&quot;;
-  for (let i = 0; i &lt; incorrectAnswers.length; i++) {
-    incorrectAnswersHtml += `
-        <p>
-          <strong>Question:</strong> ${incorrectAnswers[i].question}<br>
-          <strong>Your Answer:</strong> ${incorrectAnswers[i].incorrectAnswer}<br>
-          <strong>Correct Answer:</strong> ${incorrectAnswers[i].correctAnswer}
-        </p>
-      `;
+    result.innerHTML = `You scored ${score} out of ${quizData.length}`;
   }
 
-  resultContainer.innerHTML = `
-      <p>You scored ${score} out of ${quizData.length}!</p>
-      <p>Incorrect Answers:</p>
-      ${incorrectAnswersHtml}
-    `;
-}
+  function retryQuiz() {
+    currentQuestion = 0;
+    score = 0;
+    wrongAnswers = [];
 
-submitButton.addEventListener("click", checkAnswer);
-retryButton.addEventListener("click", retryQuiz);
-showAnswerButton.addEventListener("click", showAnswer);
+    quiz.style.display = "block";
+    submitBtn.style.display = "inline-block";
+    retryBtn.classList.add("hide");
+    showAnswerBtn.classList.add("hide");
+    result.innerHTML = "";
 
-displayQuestion();
+    loadQuestion();
+  }
+
+  function showAnswers() {
+    quiz.style.display = "none";
+    showAnswerBtn.classList.add("hide");
+
+    let html = `<h3>Correct Answers</h3>`;
+
+    wrongAnswers.forEach(item => {
+      html += `
+        <p>
+          <strong>Question:</strong> ${item.question}<br>
+          <strong>Your Answer:</strong> ${item.your}<br>
+          <strong>Correct Answer:</strong> ${item.correct}
+        </p>
+      `;
+    });
+
+    result.innerHTML = html;
+  }
+
+  submitBtn.addEventListener("click", checkAnswer);
+  retryBtn.addEventListener("click", retryQuiz);
+  showAnswerBtn.addEventListener("click", showAnswers);
+
+  loadQuestion();
+});
